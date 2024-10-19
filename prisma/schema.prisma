@@ -1,0 +1,35 @@
+// This is Project's Prisma schema file,
+generator client {
+  provider = "prisma-client-js"
+}
+
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model task {
+  task_id     String    @id @default(cuid()) @unique
+  title       String
+  description String?
+  status      Status    @default(PENDING)
+  due_date    DateTime?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  priority    Priority  @default(LOW)
+}
